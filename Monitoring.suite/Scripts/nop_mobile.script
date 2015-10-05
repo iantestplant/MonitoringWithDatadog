@@ -1,0 +1,78 @@
+﻿// Helper methods for nopCommerce using Android Google
+
+on Login user, password
+	Click (Image:"Login", WaitFor:5)
+	WaitFor 10, "PleaseSignIn"
+	//SwipeUp
+	wait 1
+	Click "Email"
+	wait 1	
+	//InputText user
+	TypeText "email01@gmail.com"
+	wait 5
+	Click "Password Input"
+	TypeText password 
+	wait 3
+	TypeText return
+	Monitor.startTiming "AG_Login"
+	WaitFor 10, Logout
+	Monitor.endTiming
+end Login
+
+on Logout
+	if ImageFound(2, "Logout")
+		Click FoundImageLocation()
+	end if
+end Logout
+
+on OpenCategory category
+	Click "Categories"
+	Click (Text:category, CaseSensitive:"Yes")
+	set startTime = time
+	Monitor.startTiming "AG_" & category
+	WaitFor  10, "HOME"
+	Monitor.endTiming
+end OpenCategory
+
+on SwipeUpToAndClick Image
+	Repeat 5 times
+		if ImageFound(0.3, image) 
+			click Image
+			exit repeat
+		else
+			SwipeUp
+		end if	
+	End repeat
+end SwipeUpToAndClick
+
+on SwipeDownToAndClick Image
+	Repeat 5 times
+		if ImageFound(0.3, image) 
+			click image
+			exit repeat
+		else
+			SwipeDown
+		end if
+	End repeat
+end SwipeDownToAndClick
+
+on InputText textToType
+	TypeText textToType
+	put ImageFound( 8, (Text:textToType))
+end InputText
+
+
+(*
+nop_mobile.SwipeUpToAndClick "Addtocart"
+Wait 2
+nop_mobile.SwipeDownToAndClick "Shoppingcart"
+
+Repeat with each item removeButton of EveryImageLocation("Remove")
+	click removeButton
+End repeat
+
+nop_mobile.SwipeUpToAndClick "Update shopping cart"
+
+SwipeDown 
+wait 2
+*)

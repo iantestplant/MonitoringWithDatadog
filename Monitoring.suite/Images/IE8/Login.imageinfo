@@ -1,0 +1,19 @@
+﻿{
+    CaptureDate = "2015-09-09 18:06:11 +0000";
+    CaptureHost = win2008User1;
+    CaptureScreenSize =     (
+        1024,
+        768
+    );
+    HasAlpha = 1;
+    HonorAlpha = 1;
+    HotSpotX = 20;
+    HotSpotY = 6;
+    LastKnownLocationX = 0;
+    LastKnownLocationY = 0;
+    OriginalLocationX = 735;
+    OriginalLocationY = 182;
+    Pulsing = 0;
+    Scale = 1;
+    SearchAlgorithm = TextSmoothSquare;
+}

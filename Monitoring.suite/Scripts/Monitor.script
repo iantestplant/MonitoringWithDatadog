@@ -1,0 +1,35 @@
+﻿// Helpers for sending monitor data to the datadog agent
+
+on recordTime key, value
+	recordData "g" && key && value
+end recordTime
+
+on recordEvent event, description
+	recordData format("e '%s' '%s' '[nopCommerce]'", event, description)
+end recordEvent
+
+on recordData command
+	Log command
+	put "192.168.7.107:9999" into DD_Server
+	open socket DD_Server
+	write command & "#" to socket DD_Server
+	read 2 characters from socket DD_Server in 1 seconds into resp
+	close socket DD_Server
+	if resp is not "OK"
+		LogError "Invalid recordData command: " && command
+	end if
+end recordData
+
+on startTiming timingName
+	set Monitor.currentTimer = timingName
+	put time into Monitor.timers.(timingName)
+end startTiming
+
+on endTiming timingName
+	if timingName is empty then 
+		set timingName = Monitor.currentTimer
+	end if
+	set elapsed = time - Monitor.timers.(timingName)
+	recordTime timingName, elapsed
+	delete Monitor.timers.(timingName)
+end endTiming

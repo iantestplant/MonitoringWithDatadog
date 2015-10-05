@@ -1,0 +1,25 @@
+﻿// script to login and check categories on nopCommerce using Android Google 
+
+//set the keydowndelay to 0.1
+//set the NextKeyDelay to 0.3
+set the mouseDragSpeed to 5
+
+TypeText homeButton
+Click "nopCommerce Icon"
+Monitor.startTiming "AG_Home_Page"
+WaitFor 8.0, "nopCommerceLogo"
+Monitor.endTiming "AG_Home_Page"
+
+nop_mobile.Logout
+
+nop_mobile.Login "email01@gmail.com", "password01"
+
+Repeat with each item category of ("BOOKS","COMPUTERS", "ELECTRONICS", "JEWELRY")
+	nop_mobile.OpenCategory category	
+End repeat
+
+
+nop_mobile.Logout
+TypeText homeButton
+
+

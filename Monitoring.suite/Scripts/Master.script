@@ -1,0 +1,33 @@
+﻿// Master script to repeat the monitor script on each device
+
+repeat 500 times
+	set startTime = time
+	set OriginalSettings = GetOptions()
+	connect "HTC"
+	RunWithNewResults nopCommerce_Android_Google
+	SendAlert the result
+	
+	setOptions( OriginalSettings )
+	connect "win2008User1"
+	RunWithNewResults nopCommerce_WindowsIE8
+	SendAlert the result, 
+	
+	set elapsed = time - startTime
+	//wait 5 minutes - elapsed
+	
+end repeat
+
+to SendAlert Outcome, info
+	if Outcome.status is not "Success"
+		Monitor.recordEvent "Run Failure", info
+		
+		put "nopCommerce Alert" && the long date into title
+		put Outcome's logfile into screenError
+		replace "logfile.txt" with "screen_error.png" in screenError
+		SendMail(To: "ian.parker@testplant.com",\
+		subject:title,\
+				body:title,\
+				attachment:(screenError, Outcome's Logfile))
+				
+	end if
+end SendAlert

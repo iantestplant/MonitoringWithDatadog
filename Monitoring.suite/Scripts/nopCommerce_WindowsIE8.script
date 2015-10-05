@@ -1,0 +1,42 @@
+﻿// Script to login and select categories from IE8 using nopCommerce 
+
+if ImageFound("IE8/IE8_titlebar") is false
+	click "IE8/InternetExplorer"
+end if
+Click "IE8/aboutblank"
+Wait 2
+Click (Image:"IE8/nopCommerce_shortcut", WaitFor:10)
+
+// record time to load the home page
+Monitor.startTiming  ("IE8_Home_Page")
+WaitFor 20, "IE8/nopCommerce"
+Monitor.endTiming
+
+if ImageFound("IE8/Logout")
+	click FoundImageLocation()
+	WaitFor 5, "IE8/Login"
+end if
+
+Click "IE8/Login"
+Click (image:"IE8/Email", waitfor:10)
+TypeText "email01@gmail.com" & tabKey
+TypeText "password01" & returnKey
+
+// record time to login (link changed to "log out")
+Monitor.startTiming "IE8_Login"
+WaitFor 10.0, "IE8/Logout"
+Monitor.endTiming
+
+Repeat with each item category of ("BOOKS","COMPUTERS", "ELECTRONICS", "JEWELRY")
+	Click "IE8/" & category
+	// record time to load the category
+	Monitor.startTiming "IE8_" & category
+	WaitFor  10, "IE8/" & category & "_list"
+	Monitor.endTiming
+	wait 2
+End repeat
+
+click Logout
+Waitfor 5, "IE8/Login"
+Wait 3
+Click "IE8/aboutblank"
